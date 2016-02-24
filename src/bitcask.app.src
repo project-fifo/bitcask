@@ -1,7 +1,7 @@
 {application, bitcask,
  [
-  {description, ""},
-  {vsn, "1.7.0"},
+  {description, "Bitcask key value store"},
+  {vsn, "2.0.2"},
   {modules, []},
   {registered, []},
   {applications, [
@@ -69,5 +69,8 @@
          %% will be discarded.
          {expiry_secs, -1}
 
-        ]}
+        ]},
+  {maintainers,["basho", "Heinz N. Gies"]},
+  {licenses,["Apache"]},
+  {links,[{"Github","https://github.com/basho/bitcask"}]}
  ]}.

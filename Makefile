@@ -3,9 +3,9 @@ BITCASK_TAG	 = $(shell git describe --tags)
 REVISION	?= $(shell echo $(BITCASK_TAG) | sed -e 's/^$(REPO)-//')
 PKG_VERSION	?= $(shell echo $(REVISION) | tr - .)
 BASE_DIR         = $(shell pwd)
-REBAR_BIN := $(shell which rebar)
+REBAR_BIN := $(shell which rebar3)
 ifeq ($(REBAR_BIN),)
-REBAR_BIN = ./rebar
+REBAR_BIN = ./rebar3
 endif
 
 PULSE_TESTS = bitcask_pulse
@@ -14,13 +14,11 @@ PULSE_TESTS = bitcask_pulse
 
 include tools.mk
 
-all: deps compile
+all: compile
 
 compile:
 	$(REBAR_BIN) compile
 
-deps:
-	$(REBAR_BIN) get-deps
 
 clean:
 	$(REBAR_BIN) clean
@@ -30,7 +28,7 @@ BITCASK_IO_MODE=erlang
 test: deps compile eunit_nif
 
 eunit_nif:
-	BITCASK_IO_MODE="nif" $(REBAR_BIN) skip_deps=true eunit
+	BITCASK_IO_MODE="nif" $(REBAR_BIN) eunit
 
 NOW	= $(shell date +%s)
 COUNTER = $(PWD)/$(NOW).current_counterexample.eqc
@@ -39,7 +37,7 @@ EQCINFO = $(PWD)/$(NOW).eqc-info
 pulse:
 	@rm -rf $(BASE_DIR)/.eunit
 	BITCASK_PULSE=1 $(REBAR_BIN) clean compile
-	env BITCASK_PULSE=1 $(REBAR_BIN) -D PULSE eunit skip_deps=true suites=$(PULSE_TESTS) ; \
+	env BITCASK_PULSE=1 $(REBAR_BIN) -D PULSE eunit suites=$(PULSE_TESTS) ; \
 	if [ $$? -ne 0 ]; then \
 		echo PULSE test FAILED; \
 		cp ./.eunit/current_counterexample.eqc $(COUNTER); \

@@ -87,11 +87,7 @@
                    tombstone_version = 2 :: 0 | 2
                   }).
 
--ifdef(namespaced_types).
 -type bitcask_set() :: sets:set().
--else.
--type bitcask_set() :: set().
--endif.
 
 -record(mstate, { dirname :: string(),
                   merge_lock :: reference(),
